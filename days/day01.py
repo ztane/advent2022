@@ -33,11 +33,6 @@ def part1(d: Input, ans: Answers) -> None:
 
 
 def part2(d: Input, ans: Answers) -> None:
-    for i in d.paragraphs():
-        print(i)
-        print('---')
-
-    return
     ans.part2 = sum(
         heapq.nlargest(
             3,
