@@ -1,6 +1,6 @@
 from helpers import *
 
-test_data = Input("""
+test_data = test_input("""
 """)
 
 test_case(1, test_data, ...)

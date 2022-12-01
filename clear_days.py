@@ -4,7 +4,7 @@ for i in range(1, 25):
         f.write(f"""\
 from helpers import *
 
-test_data = Input(\"\"\"
+test_data = test_input(\"\"\"
 \"\"\")
 
 test_case(1, test_data, ...)
