@@ -54,17 +54,10 @@ result_table: Dict[Tuple[RPS, RPS], Outcome] = {
 
 # what I need to choose so that the outcome is what I want
 # (other, outcome) -> me, i.e. (rock, win) -> paper...
-choose_table: Dict[Tuple[RPS, Outcome], RPS] = {
-    (RPS.rock, Outcome.win): RPS.paper,
-    (RPS.rock, Outcome.tie): RPS.rock,
-    (RPS.rock, Outcome.lose): RPS.scissors,
-    (RPS.paper, Outcome.win): RPS.scissors,
-    (RPS.paper, Outcome.tie): RPS.paper,
-    (RPS.paper, Outcome.lose): RPS.rock,
-    (RPS.scissors, Outcome.win): RPS.rock,
-    (RPS.scissors, Outcome.tie): RPS.scissors,
-    (RPS.scissors, Outcome.lose): RPS.paper,
-}
+choice_table: Dict[Tuple[RPS, Outcome], RPS] = {}
+
+for (my_choice, others_choice), outcome in result_table.items():
+    choice_table[others_choice, outcome] = my_choice
 
 
 def part1(d: Input, ans: Answers) -> None:
@@ -88,7 +81,7 @@ def part2(d: Input, ans: Answers) -> None:
         other = rps_symbols[other]
         outcome = outcome_symbols[outcome]
 
-        me = choose_table[other, outcome]
+        me = choice_table[other, outcome]
         score += outcome.value
         score += me.value
 
