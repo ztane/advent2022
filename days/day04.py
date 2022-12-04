@@ -33,4 +33,4 @@ def part2(d: Input, ans: Answers) -> None:
     ans.part2 = score
 
 
-run([1, 2], day=4, year=2022, submit=True)
+run([1, 2], day=4, year=2022)
