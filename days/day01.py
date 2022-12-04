@@ -28,7 +28,7 @@ test_case(2, test_data, 45000)
 
 def part1(d: Input, ans: Answers) -> None:
     ans.part1 = max(
-        (sum(elf.extract_ints) for elf in d.paragraphs()),
+        (sum(elf.as_ints) for elf in d.paragraphs()),
     )
 
 
@@ -36,7 +36,7 @@ def part2(d: Input, ans: Answers) -> None:
     ans.part2 = sum(
         heapq.nlargest(
             3,
-            (sum(elf.extract_ints) for elf in d.paragraphs()),
+            (sum(elf.as_ints) for elf in d.paragraphs()),
         )
     )
 

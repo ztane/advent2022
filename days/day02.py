@@ -58,8 +58,8 @@ result_table: Dict[Tuple[RPS, RPS], Outcome] = {
 # (other, outcome) -> me, i.e. (rock, win) -> paper...
 choice_table: Dict[Tuple[RPS, Outcome], RPS] = {}
 
-for (my_choice, others_choice), outcome in result_table.items():
-    choice_table[others_choice, outcome] = my_choice
+for (my_choice, others_choice), resulting_outcome in result_table.items():
+    choice_table[others_choice, resulting_outcome] = my_choice
 
 
 def part1(d: Input, ans: Answers) -> None:
