@@ -4,14 +4,16 @@ from more_itertools import chunked
 
 from helpers import *
 
-test_data = test_input("""
+test_data = test_input(
+    """
 vJrwpWtwJgWrhcsFMMfFFhFp
 jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
 PmmdzqPrVvPwwTWBwg
 wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
 ttgJtRGJQctTZtZT
 CrZsJsPPZsGzwwsLwLmpwMDw
-""")
+"""
+)
 
 letters = string.ascii_letters
 
@@ -41,4 +43,4 @@ def part2(d: Input, ans: Answers) -> None:
     ans.part2 = score
 
 
-run([1, 2], day=3, year=2022, submit=True)
+run([1, 2], day=3, year=2022)

@@ -1,9 +1,11 @@
 from helpers import *
 
-test_data = Input("""\
+test_data = Input(
+    """\
 5764801
 17807724
-""")
+"""
+)
 
 test_case(1, test_data, 14897079)
 

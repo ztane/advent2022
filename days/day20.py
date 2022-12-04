@@ -1,7 +1,9 @@
 from helpers import *
 
-test_data = test_input("""
-""")
+test_data = test_input(
+    """
+"""
+)
 
 test_case(1, test_data, ...)
 test_case(2, test_data, ...)

@@ -8,6 +8,7 @@ import re
 import sys
 import textwrap
 import typing
+import warnings
 from collections import *
 
 # noinspection PyUnresolvedReferences
@@ -73,6 +74,12 @@ class Input(str):
 
     @reify
     def lines(self) -> typing.Tuple["Input", ...]:
+        """
+        Return the data as a tuple of lines. The lines are Input objects
+        themselves, so you can call methods on them.
+
+        :return: the lines
+        """
         return tuple(
             filter(
                 bool,
@@ -86,53 +93,113 @@ class Input(str):
             ),
         )
 
-    def new_input(self, data: str) -> "Input":
-        return self.__class__(data)
+    @classmethod
+    def new_input(cls, data: str) -> "Input":
+        return cls(data)
 
-    def new_input_list(self, data: typing.Iterable[typing.Union[str, "Input"]]) -> typing.List["Input"]:
-        return [self.new_input(i) for i in data]
+    @classmethod
+    def new_input_list(cls, data: typing.Iterable[typing.Union[str, "Input"]]) -> typing.List["Input"]:
+        """
+        Create a new list of Input objects from the given data
+        """
+        return [cls.new_input(i) for i in data]
 
     def stripsplit(self, separator: str = None, maxsplit=-1) -> typing.List["Input"]:
         """
         Split with the desired separator and also strip whitespace from parts
+
+        :param separator: the separator to use. If not given, split on whitespace.
+            but for that you can and should use ordinary split() instead
+        :param maxsplit: the maximum number of splits to make
+        :return: the list of parts
         """
         return self.new_input_list(i.strip() for i in self.data.split(separator, maxsplit=maxsplit))
 
     def paragraphs(self) -> typing.List["Input"]:
+        """
+        Split the data into paragraphs, i.e. groups of lines separated by
+        empty lines
+
+        :return: the list of paragraphs
+        """
         return self.new_input_list(re.split("\n\n+", self))
 
     def split(self, separator: str = None, maxsplit: int = -1) -> typing.List["Input"]:
+        """
+        Split the data with the desired separator. If no separator is given,
+        split on whitespace.
+
+        :param separator: the separator to use
+        :param maxsplit: the maximum number of splits to make
+        :return: the list of parts
+        """
         return self.new_input_list(self.data.split(separator, maxsplit=maxsplit))
 
-    def replace(self, old, new, cnt: int = -1, /) -> "Input":
+    def replace(self, old: str, new: str, cnt: int = -1, /) -> "Input":
+        """
+        Replace string old with new in the data
+
+        :param old: the old string
+        :param new: the new string
+        :param cnt: the maximum number of replacements to make
+        :return: the new data
+        """
         return self.new_input(str.replace(self, old, new, cnt))
 
     @reify
     def as_int(self) -> int:
+        """
+        Return the data as a single integer
+        """
         return int(self.data)
 
     @reify
     def as_ints(self) -> typing.Tuple[int, ...]:
+        """
+        Extract all signed integers from the input. Notice that this is
+        different from `extract_unsigned` which only extracts unsigned
+        integers, i.e. it does parse 1-1 as (1, -1).
+
+        :return: tuple of integers
+        """
         return tuple(map(int, re.findall(r"-?\d+", self.data)))
 
     @reify
     def as_unsigned(self) -> typing.Tuple[int, ...]:
+        """
+            Extract all unsigned integers from the input. This will
+            return a tuple of integers. It parses 1-1 as (1, 1).
+            """
+
         return tuple(map(int, re.findall(r"\d+", self.data)))
 
     @reify
     def extract_unsigned(self) -> typing.Tuple[int, ...]:
+        """
+        Deprecated. Use `as_unsigned` instead. This uses reify but its
+        name is a verb and not a noun.
+        """
+        warnings.warn('Use `as_unsigned` instead', DeprecationWarning)
+
         return tuple(map(int, re.findall(r"\d+", self.data)))
 
     @reify
     def extract_ints(self) -> typing.Tuple[int, ...]:
+        """
+        Deprecated. Use `as_ints` instead. This uses reify but its
+        name is a verb and not a noun.
+        """
+        warnings.warn('Use `as_ints` instead', DeprecationWarning)
+
         return tuple(map(int, re.findall(r"-?\d+", self.data)))
 
     @reify
     def sentences(self) -> typing.List[typing.List[str]]:
         """
-        Assume the data is
+        Assume the data is a list of sentences on each line, and
+        return a list of lists of words
 
-        :return:
+        :return: list of lists of words
         """
         return [i.split() for i in self.lines]
 
@@ -148,10 +215,22 @@ class Input(str):
     def digit_array_to_ndarray(
         self, conversion: Callable[[str], int] = int
     ) -> np.ndarray:
+        """
+        Convert a digit array to a numpy array
+
+        :param conversion: the conversion function to use on each digit
+        :return: the numpy array
+        """
+
         return np.array([[conversion(c) for c in l] for l in self.lines])
 
     @reify
     def numpy_array(self) -> np.ndarray:
+        """
+        Assume the data is a 2-dimensional space-separated integer matrix
+
+        :return: that matrix as a numpy array
+        """
         return np.array(self.integer_matrix)
 
     def parsed_lines(
@@ -267,6 +346,7 @@ def ngrams(n: int, value: Sequence) -> typing.Iterator[Sequence]:
     """
     Given a *sequence*, return its n-grams
 
+    :param n: the n of n-grams
     :param value: the value, can be list, tuple, or str
     :return: *generator* of the ngrams
     """
@@ -286,7 +366,7 @@ def items(thing, *indexes):
     return op.itemgetter(*indexes)(thing)
 
 
-def to_ints(container: typing.Collection[typing.Any]) -> typing.Collection[float]:
+def to_ints(container: typing.Collection[typing.Any]) -> typing.Collection[int]:
     """
     Return the given items as ints, in the same container type
 
@@ -986,29 +1066,6 @@ def coords(i: Union[complex, Iterable]) -> str:
         return f"{int(x)},{int(y)}"
 
 
-def interval(
-    a: int | None = None, b: int | None = None, c: int | None = None, /
-) -> range:
-    """
-    It is like range, but... inclusive.
-    """
-    if c is None:
-        c = 1
-
-    if c > 0:
-        if b is None:
-            return range(a + 1)
-        if c is None:
-            return range(a, b + 1)
-
-        return range(a, b + 1, c)
-    else:
-        if b is None:
-            return range(a - 1)
-        if c is None:
-            return range(a, b - 1)
-
-        return range(a, b - 1, c)
 
 
 class fancyseqiter:
@@ -1356,6 +1413,59 @@ class clamping_slicer:
     def __setitem__(self, item, value):
         selector = self._calculate_slice(item)
         self._array[selector] = value
+
+
+class ExtendedRange(object):
+    def __init__(self, *args):
+        super().__init__()
+        self._wrapped = range(*args)
+
+    def __getattr__(self, item):
+        return getattr(self._wrapped, item)
+
+    def fully_contains(self, other: 'ExtendedRange') -> bool:
+        return self.start <= other.start and self.stop >= other.stop
+
+    def either_fully_contains_other(self, other: 'ExtendedRange') -> bool:
+        return self.fully_contains(other) or other.fully_contains(self)
+
+    def partially_contains(self, other: 'ExtendedRange') -> bool:
+        return (
+            self.start <= other.start < self.stop
+            or self.start <= other.stop - 1 < self.stop
+        )
+
+    def overlaps(self, other) -> bool:
+        return (
+            self.fully_contains(other) or self.partially_contains(other)
+            or other.partially_contains(self) or other.fully_contains(self)
+        )
+
+
+def interval(
+    a: int | None = None, b: int | None = None, c: int | None = None, /
+) -> ExtendedRange:
+    """
+    It is like range, but... inclusive.
+    """
+
+    if c is None:
+        c = 1
+
+    if c > 0:
+        if b is None:
+            return ExtendedRange(a + 1)
+        if c is None:
+            return ExtendedRange(a, b + 1)
+
+        return ExtendedRange(a, b + 1, c)
+    else:
+        if b is None:
+            return ExtendedRange(a - 1)
+        if c is None:
+            return ExtendedRange(a, b - 1)
+
+        return ExtendedRange(a, b - 1, c)
 
 
 def test_input(data: str) -> Input:

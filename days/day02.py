@@ -2,11 +2,13 @@ from enum import Enum
 
 from helpers import *
 
-test_data = test_input("""
+test_data = test_input(
+    """
 A Y
 B X
 C Z
-""")
+"""
+)
 
 test_case(1, test_data, 15)
 test_case(2, test_data, 12)
@@ -26,18 +28,18 @@ class Outcome(Enum):
 
 
 rps_symbols = {
-    'A': RPS.rock,
-    'B': RPS.paper,
-    'C': RPS.scissors,
-    'X': RPS.rock,
-    'Y': RPS.paper,
-    'Z': RPS.scissors,
+    "A": RPS.rock,
+    "B": RPS.paper,
+    "C": RPS.scissors,
+    "X": RPS.rock,
+    "Y": RPS.paper,
+    "Z": RPS.scissors,
 }
 
 outcome_symbols = {
-    'X': Outcome.lose,
-    'Y': Outcome.tie,
-    'Z': Outcome.win,
+    "X": Outcome.lose,
+    "Y": Outcome.tie,
+    "Z": Outcome.win,
 }
 
 result_table: Dict[Tuple[RPS, RPS], Outcome] = {
@@ -63,7 +65,7 @@ for (my_choice, others_choice), outcome in result_table.items():
 def part1(d: Input, ans: Answers) -> None:
     score = 0
 
-    for other, me in d.parsed_lines('<> <>'):
+    for other, me in d.parsed_lines("<> <>"):
         other = rps_symbols[other]
         me = rps_symbols[me]
 
@@ -77,7 +79,7 @@ def part1(d: Input, ans: Answers) -> None:
 def part2(d: Input, ans: Answers) -> None:
     score = 0
 
-    for other, outcome in d.parsed_lines('<> <>'):
+    for other, outcome in d.parsed_lines("<> <>"):
         other = rps_symbols[other]
         outcome = outcome_symbols[outcome]
 
