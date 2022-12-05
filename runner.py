@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 import sys
-import time
-from datetime import datetime, timezone
 
 if len(sys.argv) != 2:
     print('Usage: runner.py daynumber')
