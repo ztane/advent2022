@@ -1124,6 +1124,20 @@ class Answers:
         self.part1 = part1
         self.part2 = part2
 
+    def set_once(self, part: int, value: Union[str, int]) -> None:
+        """
+        Set the value if it has not been set, otherwise ignore
+        """
+
+        if part == 1:
+            if self.part1 is None:
+                self.part1 = value
+        elif part == 2:
+            if self.part2 is None:
+                self.part2 = value
+        else:
+            raise ValueError("part must be 1 or 2")
+
     def for_part(self, part: int) -> Any:
         if part == 1:
             return self.part1
@@ -1466,6 +1480,26 @@ def interval(
             return ExtendedRange(a, b - 1)
 
         return ExtendedRange(a, b - 1, c)
+
+
+def all_unique(iterable: Iterable[T]) -> bool:
+    """
+    Return True if all elements in the iterable are unique
+    """
+    seen = set()
+    for i in iterable:
+        if i in seen:
+            return False
+        seen.add(i)
+
+    return True
+
+
+def deque_full(d: deque) -> bool:
+    """
+    Return True if the deque is full
+    """
+    return len(d) == d.maxlen
 
 
 def test_input(data: str) -> Input:
