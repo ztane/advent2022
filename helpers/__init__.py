@@ -1087,6 +1087,9 @@ class fancyseqiter:
     def copy(self, adjustment=0):
         return fancyseqiter(self._s, self._i + adjustment)
 
+    def back(self):
+        self._i -= 1
+
 
 def intersection(items: Iterable[T]) -> Set[T]:
     items = list(items)
