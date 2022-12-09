@@ -7,8 +7,8 @@ mjqjpqmgbljsphdztnvjfqwrcgsmlb
 )
 
 test_case(1, test_data, 7)
-test_case(1, 'nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg', 10)
-test_case(2, 'mjqjpqmgbljsphdztnvjfqwrcgsmlb', 19)
+test_case(1, "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 10)
+test_case(2, "mjqjpqmgbljsphdztnvjfqwrcgsmlb", 19)
 
 
 def part1_and_2(d: Input, ans: Answers) -> None:

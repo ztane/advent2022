@@ -34,7 +34,7 @@ def part1_and_2(d: Input, ans: Answers) -> None:
             if idx >= len(row):
                 continue
 
-            if (c := row[idx]) != ' ':
+            if (c := row[idx]) != " ":
                 part1_stacks[stack_number].append(c)
                 part2_stacks[stack_number].append(c)
 
@@ -49,8 +49,8 @@ def part1_and_2(d: Input, ans: Answers) -> None:
         part2_stacks[to].extendleft(part2_temp_buffer)
 
     # return string of top of each stack
-    ans.part1 = ''.join(part1_stacks[stack][0] for stack in columns)
-    ans.part2 = ''.join(part2_stacks[stack][0] for stack in columns)
+    ans.part1 = "".join(part1_stacks[stack][0] for stack in columns)
+    ans.part2 = "".join(part2_stacks[stack][0] for stack in columns)
 
 
 run([1, 2], day=5, year=2022, submit=True)

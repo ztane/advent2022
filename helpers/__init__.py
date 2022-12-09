@@ -981,7 +981,7 @@ def SparseRepeatingMap(basic_pattern):
 
 
 class SparseComplexMap(dict):
-    def __init__(self, the_map=(), *, default=None):
+    def __init__(self, the_map=(), *, default=None, convert=lambda x: x):
         super().__init__()
         if callable(default):
             self.generate = default
@@ -993,7 +993,7 @@ class SparseComplexMap(dict):
         max_x = -1
         for y, row in enumerate(the_map):
             for x, cell in enumerate(row):
-                self[x + y * 1j] = cell
+                self[x + y * 1j] = convert(cell)
 
             max_x = max(x, max_x)
 
@@ -1255,6 +1255,15 @@ _direction_parser_prefix = re.compile("([newsNEWS]+)\s*(-?\d+)")
 _direction_parser_suffix = re.compile("(-?\d+)\s*([newsNEWS]+)")
 
 
+def sign(x):
+    if x < 0:
+        return -1
+    if x > 0:
+        return 1
+
+    return 0
+
+
 class cdir:
     """
     Complex directions
@@ -1269,6 +1278,15 @@ class cdir:
     NE = N + E
     SW = S + W
     SE = S + E
+
+    U = UP = 1j
+    D = DOWN = -1j
+    L = LEFT = -1
+    R = RIGHT = 1
+    UR = U + R
+    UL = U + L
+    DR = D + R
+    DL = D + L
 
     @staticmethod
     def rotate_left(vector: complex, times: int = 1):
@@ -1288,6 +1306,10 @@ class cdir:
 
     @classmethod
     def compass(cls, direction: str, length: int = 1):
+        return getattr(cls, direction.upper()) * length
+
+    @classmethod
+    def plane(cls, direction: str, length: int = 1):
         return getattr(cls, direction.upper()) * length
 
     @classmethod
@@ -1316,6 +1338,12 @@ class cdir:
                 rv += cls.compass(d, int(n))
 
         return rv
+
+    @classmethod
+    def one_step_towards(cls, start: complex, end: complex) -> complex:
+        # return a cmanhattan(1) *delta* towards end
+        delta = end - start
+        return sign(delta.real) + 1j * sign(delta.imag)
 
 
 @dataclass
