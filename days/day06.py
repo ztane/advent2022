@@ -26,4 +26,4 @@ def part1_and_2(d: Input, ans: Answers) -> None:
             ans.set_once(2, i)
 
 
-run([1, 2], day=6, year=2022, submit=True)
+run([1, 2], day=6, year=2022)

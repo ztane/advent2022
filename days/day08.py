@@ -85,4 +85,4 @@ def part2(d: Input, ans: Answers) -> None:
     ans.part2 = scenic_score
 
 
-run([1, 2], day=8, year=2022, submit=True)
+run([1, 2], day=8, year=2022)

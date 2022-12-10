@@ -1539,3 +1539,31 @@ def test_input(data: str) -> Input:
     use textwrap.dedent to remove indentation
     """
     return Input(textwrap.dedent(data))
+
+
+def ocr(pixels, width):
+    from PIL import Image
+    import pytesseract
+
+    pixels = pixels.replace('\n', '')
+    height = len(pixels) // width
+    if height != len(pixels) / width:
+        raise ValueError('Invalid width (pixel size not a multiple of the length)')
+
+    # for real data turn the picture into pixels
+    img = Image.frombytes(
+        'L', (40, 6),
+        bytes([0 if i == '#' else 255 for i in pixels])
+    )
+
+    # enlarge canvas around image by 2 pixels
+    new_img = Image.new('L', (44, 10), 255)
+    new_img.paste(img, (2, 2))
+    # resize to 10x
+    new_img = new_img.resize((440, 100))
+
+    # use pytesseract to turn the pixels into text
+    rv = pytesseract.image_to_string(new_img).strip()
+    if not rv:
+        raise ValueError('Could not read image')
+    return rv

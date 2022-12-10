@@ -57,4 +57,4 @@ def part1_and_2(d: Input, ans: Answers) -> None:
     ans.part2 = len(visited_p2)
 
 
-run([1, 2], day=9, year=2022, submit=True)
+run([1, 2], day=9, year=2022)

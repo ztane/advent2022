@@ -53,4 +53,4 @@ def part1_and_2(d: Input, ans: Answers) -> None:
     ans.part2 = "".join(part2_stacks[stack][0] for stack in columns)
 
 
-run([1, 2], day=5, year=2022, submit=True)
+run([1, 2], day=5, year=2022)
