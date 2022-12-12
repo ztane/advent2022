@@ -83,4 +83,4 @@ def part2(d: Input, ans: Answers) -> None:
     ans.part2 = lowest_distance
 
 
-run([1, 2], day=12, year=2022, submit=True)
+run([1, 2], day=12, year=2022)
