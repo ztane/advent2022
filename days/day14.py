@@ -59,11 +59,11 @@ def part2(d: Input, ans: Answers) -> None:
     n_grains = 0
 
     while True:
-        if the_map[grain + 1j] == 0:
+        if not the_map[grain + 1j]:
             grain += 1j
-        elif the_map[grain - 1 + 1j] == 0:
+        elif not the_map[grain - 1 + 1j]:
             grain += -1 + 1j
-        elif the_map[grain + 1 + 1j] == 0:
+        elif not the_map[grain + 1 + 1j]:
             grain += 1 + 1j
         else:
             the_map[grain] = 1
